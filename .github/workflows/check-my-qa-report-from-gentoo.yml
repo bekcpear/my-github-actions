@@ -1,0 +1,20 @@
+name: official QA report of Gentoo repos
+on:
+  schedule:
+    - cron: 0 0 * * *
+  workflow_dispatch:
+
+jobs:
+  check_ryans:
+    name: check ryans repo
+    runs-on: ubuntu-20.04
+    steps:
+      - name: check
+        shell: bash
+        env:
+          repo_name: ryans
+        run: |
+          set -xe
+          curl -o qa-report.txt https://qa-reports.gentoo.org/output/repos/${repo_name}.txt
+          cat qa-report.txt
+          grep 'Cache.*successfully' qa-report.txt >/dev/null
